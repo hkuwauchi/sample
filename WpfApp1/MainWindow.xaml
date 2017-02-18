@@ -1,0 +1,130 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:Interactivity="clr-namespace:Reactive.Bindings.Interactivity;assembly=ReactiveProperty.NET46"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="300">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <StackPanel  Orientation="Horizontal">
+                        <Button >
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <Interactivity:EventToReactiveCommand Command="{Binding UploadCommand, Mode=OneWay}">
+                                        <local:OpenFileDialogConverter/>
+                                    </Interactivity:EventToReactiveCommand>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            アップロード
+                        </Button>
+                        <Button Command="{Binding UpdateListCommand}">リスト更新</Button>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                        <StackPanel FlowDirection="LeftToRight">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="ようこそ:"/>
+                                <TextBlock Text="{Binding User.Name.Value}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="ファイル数:"/>
+                                <TextBlock Text="{Binding UserDocumentCount.Value}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding Documents}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Background="LightGreen" IsEnabled="{Binding Enabled.Value}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Name:"></TextBlock>
+                                        <TextBlock Text="{Binding Name.Value}"></TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1" >
+                                    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                                        <StackPanel FlowDirection="LeftToRight">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding UserName}"></TextBlock>
+                                                <ToggleButton IsChecked="{Binding Favorite.Value}" Command="{Binding UpdateUserProfileCommand}" Foreground="Gray" Background="Transparent" Focusable="False">
+                                                    <StackPanel>
+                                                        <TextBlock Text="★">
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding Favorite.Value}" Value="True">
+                                                                            <Setter Property="Foreground" Value="Yellow"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </ToggleButton>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Background="Aqua">
+                                    <TextBlock Text="Private"></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding PrivateOpenCommand}">Open</Button>
+                                        <Button Command="{Binding PrivateCloseCommand}">Close</Button>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Background="Yellow">
+                                    <TextBlock Text="Share"></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding ShareOpenCommand}">Open</Button>
+                                        <Button Command="{Binding ShareCloseCommand}">Close</Button>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Background="HotPink">
+                                    <TextBlock Text="Owner"></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Command="{Binding AdminOpenCommand}">Open</Button>
+                                        <Button Command="{Binding DeleteUserFileCommand}">Delete</Button>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <Grid Grid.Row="2">
+            <TextBlock Text="テスト"/>
+        </Grid>
+    </Grid>
+</Window>
