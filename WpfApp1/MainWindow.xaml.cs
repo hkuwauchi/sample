@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-namespace WpfApp1
+﻿namespace WpfApp1
 {
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -14,10 +8,12 @@ namespace WpfApp1
     using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using System.Windows.Shapes;
+    using MahApps.Metro.Controls;
+
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {
